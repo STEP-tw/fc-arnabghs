@@ -1,0 +1,13 @@
+h1 {
+	text-align: center;
+	color: orange;
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+}
+
+section {
+	margin: auto 0px;
+}

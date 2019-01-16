@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Flower Catalog</title>
+	<link rel="stylesheet" type="text/css" href="styleSheets/home.css" />
+</head>
+
+<body>
+	<h1>Flower Catalog</h1>
+	<hr>
+	<main>
+		<section><img src="images/freshorigins.jpg" alt='flowerMain' /></section>
+		<section>
+			<ul>
+				<li><a href="">Abeliophyllum</a></li>
+				<li><a href="">Ageratum</a></li>
+			</ul>
+			<div id="waterJar"><img src="images/animated-flower-image-0021.gif" alt='waterJar' /> </div>
+			<a href="">Guest Book</a>
+		</section>
+	</main>
+	<script>
+		let jar = document.getElementById("waterJar");
+
+		const hideForaSecond = function () {
+			jar.style.visibility = "hidden";
+			setTimeout(() => jar.style.visibility = "visible", 1000);
+		}
+		jar.onclick = hideForaSecond;
+	</script>
+</body>
+
+</html>
