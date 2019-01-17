@@ -2,10 +2,10 @@ const fs = require('fs');
 
 const app = (req, res) => {
 	let path = '.' + req.url;
-	getUrl(res, path);
+	sendResponse(res, path);
 };
 
-const getUrl = function (res, path) {
+const sendResponse = function (res, path) {
 	fs.readFile(path, (err, data) => {
 		try {
 			res.statusCode = 200;
@@ -13,7 +13,9 @@ const getUrl = function (res, path) {
 			res.end();
 		}
 		catch (err) {
-			console.log(err);
+			res.statusCode = 400;
+			res.write("Not Found");
+			res.end();
 		}
 	})
 }
