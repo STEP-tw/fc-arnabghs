@@ -1,0 +1,23 @@
+h1 {
+	text-align: center;
+	color: orange;
+}
+
+input {
+	margin: 5px 0px;
+}
+
+.feedbackHeading {
+	font-size: 30px;
+	font-weight: bold;
+	margin: 15px 0px;
+}
+
+.submitButton {
+	font-size: 100px;
+}
+
+.commentList {
+	margin: 5px 0px;
+	border-top: 1px solid black;
+}
