@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 const app = (req, res) => {
-	let path = '.' + req.url;
+	let path = './public' + req.url;
+	if (req.url == '/') path = "./public/index.html";
 	sendResponse(res, path);
 };
 
