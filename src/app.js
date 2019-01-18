@@ -29,7 +29,7 @@ const provideData = function (req, res) {
 	sendResponse(res, path);
 }
 
-const appendTableInGuest = function (res) {
+const appendTableInGuest = function (req, res) {
 	fs.readFile("./public/guestBook.html", (err, data) => {
 		data += createTable(commentDetails);
 		send(res, data);
@@ -46,11 +46,11 @@ const addDataToGuestBook = function (req, res) {
 			console.log('The data was appended to file!');
 		});
 	})
-	appendTableInGuest(res);
+	appendTableInGuest(req, res);
 }
 
 const app = new WebFrame();
-app.get('/guestBook.html', provideData);
+app.get('/guestBook.html', appendTableInGuest);
 app.post('/guestBook.html', addDataToGuestBook);
 app.use(provideData);
 const handleRequest = app.handleRequest.bind(app)
