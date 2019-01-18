@@ -9,12 +9,14 @@ const send = function (res, content, statusCode = 200) {
 const sendResponse = function (res, path) {
 	let errorMsg = "Not Found";
 	fs.readFile(path, (err, data) => {
-		try {
-			send(res, data);
+		if (err) {
+			let statusCode = 500;
+			console.log(err);
+			if (err.code = 'ENOENT') statusCode = 404;
+			send(res, errorMsg, statusCode);
+			return;
 		}
-		catch (err) {
-			send(res, errorMsg, 404);
-		}
+		send(res, data);
 	})
 }
 
@@ -38,7 +40,7 @@ const app = (req, res) => {
 				if (err) throw err;
 				console.log('The data was appended to file!');
 			});
-			res.write(JSON.stringify(details) + '\nData got submited.');
+			res.write(details + '\nData got submited.');
 			res.end();
 		})
 		return;

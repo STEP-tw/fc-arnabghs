@@ -1,1 +1,3 @@
 node_modules
+./public/comments.json
+public/comments.json
