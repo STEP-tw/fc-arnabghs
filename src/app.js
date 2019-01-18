@@ -1,5 +1,5 @@
 const fs = require('fs');
-const commentDetails = require('../public/comments.json');
+const commentDetails = require('../public/database/comments.json');
 const WebFrame = require('./frameWork');
 const { getDetails, createTable } = require('../public/guestBook.js');
 
@@ -41,7 +41,7 @@ const addDataToGuestBook = function (req, res) {
 	req.on('data', (chunk) => content += chunk)
 	req.on('end', () => {
 		commentDetails.unshift(getDetails(content));
-		fs.writeFile("./public/comments.json", JSON.stringify(commentDetails), (err) => {
+		fs.writeFile("./public/database/comments.json", JSON.stringify(commentDetails), (err) => {
 			if (err) throw err;
 			console.log('The data was appended to file!');
 		});
