@@ -7,6 +7,15 @@ input {
 	margin: 5px 0px;
 }
 
+table {
+	width: 100%;
+	border: 1px solid black;
+}
+
+th, td {
+	border: 1px solid black;
+}
+
 .feedbackHeading {
 	font-size: 30px;
 	font-weight: bold;

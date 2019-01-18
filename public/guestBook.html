@@ -4,25 +4,17 @@
 <head>
 	<title>Guest Book</title>
 	<link rel="stylesheet" type="text/css" href="styleSheets/guestBook.css" />
-	<script src="main.js"></script>
 </head>
 
 <body>
 	<h1> <a href="./index.html">
-			<< </a>Guest Book</h1> <form id="form" action="handleComment" method="POST">
+			<< </a>Guest Book</h1> <form id="form" method="POST">
 				<div class="feedbackHeading"> Leave a Comment </div>
-				<div>Name : <input type="text" name="name"></div>
+				<div>Name : <input type="text" name="name" required></div>
 				comment : <textarea name="comment" form="form" rows="5" cols="40">  </textarea>
-				<!-- <div>Comment : <input type="text" name="cpmment"></div> -->
-				<div><input class="submitButton" type="submit" value="submit"></div>
-				<div class="commentList">DATE_TIME_NAME__COMMENT_LIST</div>
+				<div><input class="submitButton" type="submit" value="submit" required></div>
+				<hr>
 				</form>
-
-				<script>
-					const getData = function () {
-
-					}
-				</script>
 </body>
 
 </html>

@@ -1,4 +1,7 @@
 const fs = require('fs');
+const commentDetails = require('../public/comments.json');
+const WebFrame = require('./frameWork');
+const { getDetails, createTable } = require('../public/guestBook.js');
 
 const send = function (res, content, statusCode = 200) {
 	res.statusCode = statusCode;
@@ -20,34 +23,36 @@ const sendResponse = function (res, path) {
 	})
 }
 
-const getDetails = function (content) {
-	let details = content.split('&');
-	let comment = details[1].split('=')[1].split('+').join(' ').split('%0D%0A').join('\n');
-	let name = details[0].split('=')[1].split('+').join(' ').split('%0D%0A').join('\n');
-	let dateAndTime = new Date().toLocaleString();
-	return { dateAndTime, name, comment };
-}
-
-const app = (req, res) => {
+const provideData = function (req, res) {
 	let path = './public' + req.url;
 	if (req.url == '/') path = "./public/index.html";
-	if (req.url == '/handleComment') {
-		let content = "";
-		req.on('data', (chunk) => content += chunk)
-		req.on('end', () => {
-			let details = JSON.stringify(getDetails(content));
-			fs.appendFile("./public/comments.json", details, (err) => {
-				if (err) throw err;
-				console.log('The data was appended to file!');
-			});
-			res.write(details + '\nData got submited.');
-			res.end();
-		})
-		return;
-	}
 	sendResponse(res, path);
-};
+}
 
-// Export a function that can act as a handler
+const appendTableInGuest = function (res) {
+	fs.readFile("./public/guestBook.html", (err, data) => {
+		data += createTable(commentDetails);
+		send(res, data);
+	});
+}
 
-module.exports = { app };
+const addDataToGuestBook = function (req, res) {
+	let content = "";
+	req.on('data', (chunk) => content += chunk)
+	req.on('end', () => {
+		commentDetails.unshift(getDetails(content));
+		fs.writeFile("./public/comments.json", JSON.stringify(commentDetails), (err) => {
+			if (err) throw err;
+			console.log('The data was appended to file!');
+		});
+	})
+	appendTableInGuest(res);
+}
+
+const app = new WebFrame();
+app.get('/guestBook.html', provideData);
+app.post('/guestBook.html', addDataToGuestBook);
+app.use(provideData);
+const handleRequest = app.handleRequest.bind(app)
+
+module.exports = handleRequest;
