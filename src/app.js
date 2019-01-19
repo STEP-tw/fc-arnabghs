@@ -1,7 +1,8 @@
 const fs = require('fs');
-const commentDetails = require('../public/database/comments.json');
+let commentDetails = fs.readFileSync("./public/database/comments.json", "utf-8");
+commentDetails = JSON.parse(commentDetails);
 const WebFrame = require('./frameWork');
-const { getDetails, createTable } = require('../public/guestBook.js');
+const { getDetails, createTable } = require('./guestBook');
 
 const send = function (res, content, statusCode = 200) {
 	res.statusCode = statusCode;
