@@ -2,6 +2,7 @@ h1 {
 	text-align: center;
 	color: orange;
 	border-bottom: 1px solid black;
+	padding: 10px;
 }
 
 main {
