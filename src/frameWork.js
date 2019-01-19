@@ -19,14 +19,8 @@ class WebFrame {
 		this.routes.push({ method: "POST", url, handler });
 	}
 	handleRequest(req, res) {
-		let matchingRoutes = this.routes.filter(r => isMatching(req, r));
-		let next = () => {
-			let current = matchingRoutes[0];
-			if (!current) return;
-			matchingRoutes = matchingRoutes.slice(1);
-			current.handler(req, res, next);
-		};
-		next();
+		let matchingRoutes = this.routes.filter(route => isMatching(req, route));
+		matchingRoutes[0].handler(req, res);
 	}
 }
 
