@@ -2,7 +2,7 @@ const fs = require('fs');
 let commentDetails = fs.readFileSync("./public/database/comments.json", "utf-8");
 commentDetails = JSON.parse(commentDetails);
 const WebFrame = require('./frameWork');
-const { getDetails, createTable } = require('./guestBook');
+const { getDetails } = require('./guestBook');
 
 const send = function (res, content, statusCode = 200) {
 	res.statusCode = statusCode;
@@ -30,12 +30,6 @@ const provideData = function (req, res) {
 	sendResponse(res, path);
 }
 
-const appendTableInGuest = function (req, res) {
-	fs.readFile("./public/guestBook.html", (err, data) => {
-		data += createTable(commentDetails);
-		send(res, data);
-	});
-}
 
 const addDataToGuestBook = function (req, res) {
 	let content = "";
@@ -47,12 +41,16 @@ const addDataToGuestBook = function (req, res) {
 			console.log('The data was appended to file!');
 		});
 	})
-	appendTableInGuest(req, res);
+	provideData(req, res);
+}
+
+const getComments = function (req, res) {
+	send(res, JSON.stringify(commentDetails));
 }
 
 const app = new WebFrame();
-app.get('/guestBook.html', appendTableInGuest);
 app.post('/guestBook.html', addDataToGuestBook);
+app.get("/comments", getComments);
 app.use(provideData);
 const handleRequest = app.handleRequest.bind(app)
 
