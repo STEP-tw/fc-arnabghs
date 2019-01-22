@@ -24,13 +24,9 @@ const createTable = function (details) {
 	return createTableBody(commentDetails);
 }
 
-
 const getComments = function (comments) {
-	let commentsDiv = document.createElement('div');
-	commentsDiv.id = "commentDiv";
+	let commentsDiv = document.getElementById('commentsDiv');
 	commentsDiv.innerHTML = createTable(comments);
-	let body = document.getElementsByTagName("body")[0];
-	body.appendChild(commentsDiv);
 }
 
 const fetchData = function () {
