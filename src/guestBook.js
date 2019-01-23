@@ -1,12 +1,8 @@
 const getDetails = function (content) {
-	let details = content.split('&');
-	let comment = details[1].split('=')[1].replace(/\+/g, ' ');
-	let name = details[0].split('=')[1].replace(/\+/g, ' ');
-	name = decodeURIComponent(name);
+	let comment = content.split('=')[1].replace(/\+/g, ' ');
 	comment = decodeURIComponent(comment);
-	let dateAndTime = new Date().toLocaleString();
-	return { dateAndTime, name, comment };
+	let dateAndTime = new Date();
+	return { dateAndTime, comment };
 }
-
 
 module.exports = { getDetails };

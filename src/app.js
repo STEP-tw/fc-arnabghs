@@ -5,19 +5,21 @@ const WebFrame = require('./frameWork');
 const { getDetails } = require('./guestBook');
 
 const uppperPart = {
-	loggedInPage: `<form id="form" method="POST">
+	loggedInPage: function (name) {
+		return `<form id="form" method="POST">
 					<div class="feedbackHeading"> Leave a Comment </div>
-					<div>Name : <input type="text" name="name" required></div>
+					<div>Name : ${name} <button> Logout </button></div><br>
 					comment : <textarea name="comment" form="form" rows="5" cols="40">  </textarea>
 					<div><input class="submitButton" type="submit" value="submit"></div>
 					<hr>
-					</form>`,
-	loginPage: `<form id="form" action="/login" method="POST">
+					</form>`},
+	loginPage: function () {
+		return `<form id="form" action="/login" method="POST">
 	<div class="feedbackHeading"> Login to Comment </div>
 	<div>Name : <input type="text" name="name" required>
 	<input class="submitButton" type="submit" value="Login"></div>
 	<hr>
-	</form>`
+	</form>` }
 }
 
 const send = function (res, content, statusCode = 200) {
@@ -46,12 +48,19 @@ const provideData = function (req, res) {
 	sendResponse(res, path);
 }
 
+const addNameWithComment = function (req, content) {
+	let comment = getDetails(content);
+	let userName = req.headers.cookie.split('=')[1];
+	comment.name = userName;
+	commentDetails.unshift(comment);
+	return commentDetails;
+}
 
 const addDataToGuestBook = function (req, res) {
 	let content = "";
 	req.on('data', (chunk) => content += chunk)
 	req.on('end', () => {
-		commentDetails.unshift(getDetails(content));
+		let commentDetails = addNameWithComment(req, content);
 		fs.writeFile("./public/database/comments.json", JSON.stringify(commentDetails), (err) => {
 			if (err) throw err;
 			console.log('The data was appended to file!');
@@ -68,9 +77,13 @@ const getGuestPage = function (req, res) {
 	let path = './public' + req.url;
 	let page = fs.readFileSync(path, 'utf8');
 	let logPart = "loginPage";
-	console.log(req.headers.cookie);
-	if (req.headers.cookie) logPart = "loggedInPage";
-	page = page.replace("###FORM###", uppperPart[logPart]);
+	let userName = "Name of User Appears here";
+
+	if (req.headers.cookie) {
+		logPart = "loggedInPage";
+		userName = req.headers.cookie.split('=')[1];
+	}
+	page = page.replace("###FORM###", uppperPart[logPart](userName));
 	send(res, page);
 }
 

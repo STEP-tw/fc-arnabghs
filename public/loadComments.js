@@ -24,9 +24,16 @@ const createTable = function (details) {
 	return createTableBody(commentDetails);
 }
 
+const getLocalTime = function (commentDetail) {
+	let localDate = new Date(commentDetail.dateAndTime).toLocaleString();
+	commentDetail.dateAndTime = localDate;
+	return commentDetail;
+}
+
 const getComments = function (comments) {
 	let commentsDiv = document.getElementById('commentsDiv');
-	commentsDiv.innerHTML = createTable(comments);
+	let commentsWithLocalTime = comments.map(getLocalTime);
+	commentsDiv.innerHTML = createTable(commentsWithLocalTime);
 }
 
 const fetchData = function () {
