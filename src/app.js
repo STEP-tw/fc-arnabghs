@@ -8,7 +8,8 @@ const uppperPart = {
 	loggedInPage: function (name) {
 		return `<form id="form" method="POST">
 					<div class="feedbackHeading"> Leave a Comment </div>
-					<div>Name : ${name} <button> Logout </button></div><br>
+					<div>Name : ${name} 
+					<button type="submit" formaction = "/logout" formmethod = "POST"> Logout </button></div><br>
 					comment : <textarea name="comment" form="form" rows="5" cols="40">  </textarea>
 					<div><input class="submitButton" type="submit" value="submit"></div>
 					<hr>
@@ -99,12 +100,21 @@ const logUserIn = function (req, res) {
 	})
 }
 
+const logOutUser = function (req, res) {
+	const expiryDate = "Thu, 01 Jan 1970 00:00:00 UTC";
+	res.setHeader("Set-Cookie", `username=;expires=${expiryDate};`);
+	res.writeHead(302, {
+		Location: "/guestBook.html"
+	});
+	res.end();
+}
 
 const app = new WebFrame();
 app.post('/guestBook.html', addDataToGuestBook);
 app.get('/guestBook.html', getGuestPage);
 app.get("/comments", getComments);
-app.post("/login", logUserIn)
+app.post("/login", logUserIn);
+app.post("/logout", logOutUser);
 app.use(provideData);
 const handleRequest = app.handleRequest.bind(app)
 
