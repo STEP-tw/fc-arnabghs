@@ -93,9 +93,7 @@ const logUserIn = function (req, res) {
 	req.on('data', (chunk) => content += chunk);
 	req.on('end', () => {
 		res.setHeader("Set-Cookie", `username=${content.split('=')[1]}`);
-		res.writeHead(302, {
-			Location: "/guestBook.html"
-		});
+		res.writeHead(302, { Location: "/guestBook.html" });
 		res.end();
 	})
 }
@@ -103,9 +101,7 @@ const logUserIn = function (req, res) {
 const logOutUser = function (req, res) {
 	const expiryDate = "Thu, 01 Jan 1970 00:00:00 UTC";
 	res.setHeader("Set-Cookie", `username=;expires=${expiryDate};`);
-	res.writeHead(302, {
-		Location: "/guestBook.html"
-	});
+	res.writeHead(302, { Location: "/guestBook.html" });
 	res.end();
 }
 
